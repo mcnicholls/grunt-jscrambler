@@ -1,5 +1,6 @@
 # Never used Node.js and Grunt before
 Please install [Node.js](http://nodejs.org/download/)
+
 On the root of your project and create package.json:
 ```js
 {
