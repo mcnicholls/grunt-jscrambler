@@ -1,6 +1,6 @@
 # grunt-jscrambler
 
-> Ofuscate your source files.
+> Obfuscate your source files.
 
 ## Getting Started
 This plugin requires Grunt `~0.4.2`
