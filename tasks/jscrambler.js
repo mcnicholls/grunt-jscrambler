@@ -8,7 +8,7 @@ var _ = require('lodash');
 var fs = require('fs-extra');
 var jScrambler = require('jscrambler');
 module.exports = function (grunt) {
-  grunt.registerTask('jscrambler', 'Obfuscate your source files', function() {
+  grunt.registerMultiTask('jscrambler', 'Obfuscate your source files', function() {
     var done = this.async();
     var options = this.options({
       params: {},
