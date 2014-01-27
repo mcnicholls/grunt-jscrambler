@@ -10,13 +10,13 @@ var jScrambler = require('jscrambler');
 module.exports = function (grunt) {
   grunt.registerMultiTask('jscrambler', 'Obfuscate your source files', function() {
     var done = this.async();
-    var options = this.options({
+    _.defaults(this.data, {
       params: {},
       out: './out/out.zip',
       accessKey: '',
       secretKey: ''
     });
-    _.defaults(options.params, {
+    _.defaults(this.data.params, {
       files: [],
       mode: 'mobile',
       whitespace: '%DEFAULT%',
@@ -32,11 +32,11 @@ module.exports = function (grunt) {
     });
     var projectId;
     var client = new jScrambler.Client({
-      accessKey: options.accessKey,
-      secretKey: options.secretKey
+      accessKey: this.data.accessKey,
+      secretKey: this.data.secretKey
     });
     var writeFile = function (res) {
-      fs.outputFileSync(options.out, res);
+      fs.outputFileSync(this.data.out, res);
       done();
     };
     var onError = function (err) {
@@ -68,7 +68,7 @@ module.exports = function (grunt) {
         });
     };
     jScrambler
-      .uploadCode(client, options.params)
+      .uploadCode(client, this.data.params)
       .then(function (res) {
         projectId = res.id;
         requestInfo();

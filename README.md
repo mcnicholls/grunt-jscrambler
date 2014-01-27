@@ -26,15 +26,13 @@ In your project's Gruntfile, add a section named `jscrambler` to the data object
 grunt.initConfig({
   jscrambler: {
     main: {
-      options: {
-        params: {
-          files: [] // files to scramble
-          // For other parameters please check JScrambler API documentation
-        },
-        accessKey: '', // required
-        secretKey: '', // required
-        out: 'out/out.zip' // default value
-      }
+      params: {
+        files: [] // files to scramble
+        // For other parameters please check JScrambler API documentation
+      },
+      accessKey: '', // required
+      secretKey: '', // required
+      out: 'out/out.zip' // default value
     }
   },
 });
