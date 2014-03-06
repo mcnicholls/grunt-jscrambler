@@ -10,14 +10,13 @@ var jScrambler = require('jscrambler');
 module.exports = function (grunt) {
   grunt.registerMultiTask('jscrambler', 'Obfuscate your source files', function() {
     var done = this.async();
-    var data = _.defaults(this.data, {
-      params: {},
-      out: './out/out.zip',
-      accessKey: '',
-      secretKey: ''
-    });
-    _.defaults(data.params, {
+    var options = this.options({
+      keys: {
+        accessKey: '',
+        secretKey: ''
+      },
       files: [],
+      out: './out/out.zip',
       mode: 'mobile',
       whitespace: '%DEFAULT%',
       rename_local: '%DEFAULT%',
@@ -32,14 +31,15 @@ module.exports = function (grunt) {
     });
     var projectId;
     var client = new jScrambler.Client({
-      accessKey: data.accessKey,
-      secretKey: data.secretKey
+      accessKey: options.keys.accessKey,
+      secretKey: options.keys.secretKey
     });
     var writeFile = function (res) {
-      fs.outputFileSync(data.out, res);
+      fs.outputFileSync(options.out, res);
       done();
     };
     var onError = function (err) {
+      console.error('There was an error executing the task: %s HTTP Code', err.statusCode);
       throw new Error(err);
     };
     var requestInfo = function () {
@@ -68,13 +68,11 @@ module.exports = function (grunt) {
         });
     };
     jScrambler
-      .uploadCode(client, data.params)
+      .uploadCode(client, _.omit(options, 'keys', 'out'))
       .then(function (res) {
         projectId = res.id;
         requestInfo();
       })
-      .fail(function (err) {
-        throw new Error(err);
-      });
+      .fail(onError);
   });
 };
