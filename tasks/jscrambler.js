@@ -28,7 +28,6 @@ module.exports = function (grunt) {
       function_outlining: '%DEFAULT%',
       dictionary_compression: '%DEFAULT%'
     });
-    var params = _.clone(options, true);
     var projectId;
     var client = new jScrambler.Client({
       accessKey: options.keys.accessKey,
@@ -39,8 +38,7 @@ module.exports = function (grunt) {
       done();
     };
     var onError = function (err) {
-      console.error('There was an error executing the task: %s HTTP Code', err.statusCode);
-      throw new Error(err);
+      grunt.fail.fatal('There was an error executing the task: %s HTTP Code', err.statusCode);
     };
     var requestInfo = function () {
       var projectFinished = false;
@@ -67,10 +65,10 @@ module.exports = function (grunt) {
           if (!projectFinished) setTimeout(requestInfo, 1000);
         });
     };
-    if(this.files.length > 1) {
+    if (this.files.length > 1) {
       grunt.fail.fatal('Only one set of files is supported');
     }
-    params = _.omit(params, 'keys');
+    var params = _.omit(options, 'keys');
     params.files = this.filesSrc;
     jScrambler
       .uploadCode(client, params)
