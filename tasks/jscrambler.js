@@ -10,13 +10,12 @@ var jScrambler = require('jscrambler');
 module.exports = function (grunt) {
   grunt.registerMultiTask('jscrambler', 'Obfuscate your source files', function() {
     var done = this.async();
+    var files = this.files;
     var options = this.options({
       keys: {
         accessKey: '',
         secretKey: ''
       },
-      files: [],
-      out: './out/out.zip',
       mode: 'mobile',
       whitespace: '%DEFAULT%',
       rename_local: '%DEFAULT%',
@@ -29,13 +28,14 @@ module.exports = function (grunt) {
       function_outlining: '%DEFAULT%',
       dictionary_compression: '%DEFAULT%'
     });
+    var params = _.clone(options, true);
     var projectId;
     var client = new jScrambler.Client({
       accessKey: options.keys.accessKey,
       secretKey: options.keys.secretKey
     });
     var writeFile = function (res) {
-      fs.outputFileSync(options.out, res);
+      fs.outputFileSync(files[0].dest, res);
       done();
     };
     var onError = function (err) {
@@ -67,8 +67,13 @@ module.exports = function (grunt) {
           if (!projectFinished) setTimeout(requestInfo, 1000);
         });
     };
+    if(this.files.length > 1) {
+      grunt.fail.fatal('Only one set of files is supported');
+    }
+    params = _.omit(params, 'keys');
+    params.files = this.filesSrc;
     jScrambler
-      .uploadCode(client, _.omit(options, 'keys', 'out'))
+      .uploadCode(client, params)
       .then(function (res) {
         projectId = res.id;
         requestInfo();
