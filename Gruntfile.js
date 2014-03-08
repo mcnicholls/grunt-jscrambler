@@ -3,7 +3,7 @@
 module.exports = function(grunt) {
     grunt.initConfig({
         clean: {
-            test: ['tmp']
+            test: ['.tmp']
         },
         jscrambler: {
             test: {
@@ -12,7 +12,13 @@ module.exports = function(grunt) {
                     mode: 'starter'
                 },
                 files: [
-                    { src: ['Gruntfile.js'], dest: 'tmp/out.zip'}
+                    { src: ['Gruntfile.js'], dest: '.tmp/'},
+                    {
+                        expand: true,
+                        src: ['tasks/*.js'],
+                        dest: '.tmp/',
+                        ext: '.min.js'
+                    }
                 ]
             }
         }

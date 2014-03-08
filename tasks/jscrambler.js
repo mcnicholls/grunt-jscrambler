@@ -7,6 +7,8 @@
 var _ = require('lodash');
 var fs = require('fs-extra');
 var jScrambler = require('jscrambler');
+var JSZip = require('jszip');
+var path = require('path');
 module.exports = function (grunt) {
   grunt.registerMultiTask('jscrambler', 'Obfuscate your source files', function() {
     var done = this.async();
@@ -33,8 +35,13 @@ module.exports = function (grunt) {
       accessKey: options.keys.accessKey,
       secretKey: options.keys.secretKey
     });
-    var writeFile = function (res) {
-      fs.outputFileSync(files[0].dest, res);
+    var writeFiles = function (res) {
+      if (zipOutput) {
+        fs.outputFileSync(files[0].dest, res);
+      }
+      else {
+        unzipFiles(res);
+      }
       done();
     };
     var onError = function (err) {
@@ -54,7 +61,7 @@ module.exports = function (grunt) {
                 // Download the project zip file
                 jScrambler
                   .downloadCode(client, projectId)
-                  .then(writeFile)
+                  .then(writeFiles)
                   .fail(onError);
                 projectFinished = true;
               }
@@ -65,9 +72,38 @@ module.exports = function (grunt) {
           if (!projectFinished) setTimeout(requestInfo, 1000);
         });
     };
-    if (this.files.length > 1) {
-      grunt.fail.fatal('Only one set of files is supported');
-    }
+    var unzipFiles = function (zipFile) {
+      var zip = new JSZip(zipFile),
+        file,
+        dest,
+        buffer;
+
+      for (file in zip.files) {
+        dest = filePaths[file];
+        buffer = zip.file(file).asNodeBuffer();
+
+        if (/\/$/.test(dest)) {
+          grunt.file.mkdir(dest);
+          dest = path.join(dest, file);
+        } else {
+          grunt.file.mkdir(path.dirname(dest));
+        }
+        fs.createWriteStream(dest).write(buffer);
+      }
+    };
+    var filePaths = {};
+    var zipOutput = false;
+    this.files.forEach(function (f) {
+      if (path.extname(f.dest) === '.zip') {
+        if (this.files.length > 1) {
+          grunt.fail.fatal('Only one set of files is supported when outputing a zip');
+        }
+        zipOutput = true;
+      }
+      f.src.forEach(function (s) {
+        filePaths[path.basename(s)] = f.dest;
+      });
+    }, this);
     var params = _.omit(options, 'keys');
     params.files = this.filesSrc;
     jScrambler
