@@ -1,0 +1,13 @@
+{
+  "engines": {
+    "node": ">= 0.1"
+  },
+  "devDependencies": {
+    "grunt": "^0.4.2",
+    "grunt-contrib-clean": "^0.5.0",
+    "grunt-jscrambler": "^0.2.0"
+  },
+  "peerDependencies": {
+    "grunt": "^0.4.2"
+  }
+}
