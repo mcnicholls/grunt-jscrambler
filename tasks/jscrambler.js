@@ -1,4 +1,4 @@
-/*
+/**
  * grunt-jscrambler
  * @author José Magalhães (magalhas@gmail.com)
  * @license MIT <http://opensource.org/licenses/MIT>
@@ -9,8 +9,9 @@ var fs = require('fs-extra');
 var jScrambler = require('jscrambler');
 var JSZip = require('jszip');
 var path = require('path');
+
 module.exports = function (grunt) {
-  grunt.registerMultiTask('jscrambler', 'Obfuscate your source files', function() {
+  grunt.registerMultiTask('jscrambler', 'Obfuscate your source files', function () {
     var done = this.async();
     var files = this.files;
     var options = this.options({
@@ -18,18 +19,23 @@ module.exports = function (grunt) {
         accessKey: '',
         secretKey: ''
       },
-      mode: 'mobile',
-      whitespace: '%DEFAULT%',
-      rename_local: '%DEFAULT%',
-      literal_duplicates: '%DEFAULT%',
-      function_reorder: '%DEFAULT%',
-      //domain_lock: '%DEFAULT%',
-      expiration_date: '%DEFAULT%',
-      literal_hooking: '%DEFAULT%',
-      dot_notation_elimination: '%DEFAULT%',
-      function_outlining: '%DEFAULT%',
-      dictionary_compression: '%DEFAULT%'
+      mode: 'standard'
     });
+    if (!options.params) {
+      // By default the params are optimized for Node.js
+      options.params = _.extend({}, {
+        rename_local: '%DEFAULT%',
+        whitespace: '%DEFAULT%',
+        literal_hooking: '%DEFAULT%',
+        dead_code: '%DEFAULT%',
+        dot_notation_elimination: '%DEFAULT%',
+        dead_code_elimination: '%DEFAULT%',
+        constant_folding: '%DEFAULT%',
+        literal_duplicates: '%DEFAULT%',
+        function_outlining: '%DEFAULT%',
+        string_splitting:'%DEFAULT%'
+      });
+    }
     var projectId;
     var client = new jScrambler.Client({
       accessKey: options.keys.accessKey,
@@ -104,7 +110,7 @@ module.exports = function (grunt) {
         filePaths[path.basename(s)] = f.dest;
       });
     }, this);
-    var params = _.omit(options, 'keys');
+    var params = _.extend(_.omit(options, 'keys', 'params'), options.params);
     params.files = this.filesSrc;
     jScrambler
       .uploadCode(client, params)
