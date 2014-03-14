@@ -18,12 +18,11 @@ module.exports = function (grunt) {
       keys: {
         accessKey: '',
         secretKey: ''
-      },
-      mode: 'standard'
+      }
     });
     if (!options.params) {
       // By default the params are optimized for Node.js
-      options.params = _.extend({}, {
+      options.params = {
         rename_local: '%DEFAULT%',
         whitespace: '%DEFAULT%',
         literal_hooking: '%DEFAULT%',
@@ -34,7 +33,7 @@ module.exports = function (grunt) {
         literal_duplicates: '%DEFAULT%',
         function_outlining: '%DEFAULT%',
         string_splitting:'%DEFAULT%'
-      });
+      };
     }
     var projectId;
     var client = new jScrambler.Client({
@@ -51,7 +50,7 @@ module.exports = function (grunt) {
       done();
     };
     var onError = function (err) {
-      grunt.fail.fatal('There was an error executing the task: %s HTTP Code', err.statusCode);
+      grunt.fail.fatal(err);
     };
     var requestInfo = function () {
       var projectFinished = false;
@@ -87,14 +86,13 @@ module.exports = function (grunt) {
       for (file in zip.files) {
         dest = filePaths[file];
         buffer = zip.file(file).asNodeBuffer();
-
         if (/\/$/.test(dest)) {
           grunt.file.mkdir(dest);
           dest = path.join(dest, file);
         } else {
           grunt.file.mkdir(path.dirname(dest));
         }
-        fs.createWriteStream(dest).write(buffer);
+        fs.writeFileSync(dest, buffer);
       }
     };
     var filePaths = {};
