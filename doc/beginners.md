@@ -17,12 +17,15 @@ exports = module.exports = function (grunt) {
   grunt.initConfig({
     jscrambler: {
       main: {
-        params: {
-          files: ['file1.js', 'file2.js']
+        options: {
+          keys: {
+            accessKey: '',
+            secretKey: ''
+          }
         },
-        accessKey: '',
-        secretKey: '',
-        out: './out/out.zip' // default value
+        files: [
+          {src: ['foo.js', 'bar.js'], dest: 'output/'},
+        ]
       }
     }
   });
