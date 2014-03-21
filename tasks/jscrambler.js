@@ -52,31 +52,6 @@ module.exports = function (grunt) {
     var onError = function (err) {
       grunt.fail.fatal(err);
     };
-    var requestInfo = function () {
-      var projectFinished = false;
-      // Get projects info to check for status
-      jScrambler
-        .getInfo(client)
-        .then(function (res) {
-          for (var i = 0, l = res.length; i < l; i++) {
-            // Find projectId inside the response
-            if (res[i].id === projectId) {
-              // Did it finish?
-              if (res[i].finished_at) {
-                // Download the project zip file
-                jScrambler
-                  .downloadCode(client, projectId)
-                  .then(writeFiles)
-                  .fail(onError);
-                projectFinished = true;
-              }
-              break;
-            }
-          }
-          // Try again later...
-          if (!projectFinished) setTimeout(requestInfo, 1000);
-        });
-    };
     var unzipFiles = function (zipFile) {
       var zip = new JSZip(zipFile),
         file,
@@ -113,9 +88,9 @@ module.exports = function (grunt) {
     jScrambler
       .uploadCode(client, params)
       .then(function (res) {
-        projectId = res.id;
-        requestInfo();
+        return jScrambler.downloadCode(client, res.id);
       })
+      .then(writeFiles)
       .fail(onError);
   });
 };
