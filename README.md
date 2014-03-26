@@ -56,7 +56,7 @@ A string value that is used to sign requests to the JScrambler API.
 ##### options.deleteProject
 Type: `Boolean`
 
-If this is set to `true` then the project will be delete from JScrambler after it has been downloaded.
+If this is set to `true` then the project will be deleted from JScrambler after it has been downloaded.
 
 ##### options.params
 Type: `Object`
