@@ -18,7 +18,8 @@ module.exports = function (grunt) {
       keys: {
         accessKey: '',
         secretKey: ''
-      }
+      },
+      deleteProject: false
     });
     if (!options.params) {
       // By default the params are optimized for Node.js
@@ -47,7 +48,6 @@ module.exports = function (grunt) {
       else {
         unzipFiles(res);
       }
-      done();
     };
     var onError = function (err) {
       grunt.fail.fatal(err);
@@ -88,9 +88,16 @@ module.exports = function (grunt) {
     jScrambler
       .uploadCode(client, params)
       .then(function (res) {
+        projectId = res.id;
         return jScrambler.downloadCode(client, res.id);
       })
       .then(writeFiles)
+      .then(function () {
+        if(options.deleteProject) {
+          return jScrambler.deleteCode(client, projectId);
+        }
+      })
+      .then(done)
       .fail(onError);
   });
 };
