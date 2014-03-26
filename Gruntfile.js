@@ -8,7 +8,8 @@ module.exports = function (grunt) {
     jscrambler: {
       test: {
         options: {
-          keys: grunt.file.readJSON('jscrambler_keys.json')
+          keys: grunt.file.readJSON('jscrambler_keys.json'),
+          deleteProject: true
         },
         files: [
           { src: ['Gruntfile.js'], dest: '.tmp/'},
