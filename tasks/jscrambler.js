@@ -4,6 +4,7 @@
  * @license MIT <http://opensource.org/licenses/MIT>
  */
 'use strict';
+
 var _ = require('lodash');
 var fs = require('fs-extra');
 var jScrambler = require('jscrambler');
@@ -41,48 +42,9 @@ module.exports = function (grunt) {
       accessKey: options.keys.accessKey,
       secretKey: options.keys.secretKey
     });
-    var writeFiles = function (res) {
-      if (zipOutput) {
-        fs.outputFileSync(files[0].dest, res);
-      }
-      else {
-        unzipFiles(res);
-      }
-    };
-    var onError = function (err) {
-      grunt.fail.fatal(err);
-    };
-    var unzipFiles = function (zipFile) {
-      var zip = new JSZip(zipFile),
-        file,
-        dest,
-        buffer;
-
-      for (file in zip.files) {
-        dest = filePaths[file];
-        buffer = zip.file(file).asNodeBuffer();
-        if (/\/$/.test(dest)) {
-          grunt.file.mkdir(dest);
-          dest = path.join(dest, file);
-        } else {
-          grunt.file.mkdir(path.dirname(dest));
-        }
-        fs.writeFileSync(dest, buffer);
-      }
-    };
-    var filePaths = {};
-    var zipOutput = false;
-    this.files.forEach(function (f) {
-      if (path.extname(f.dest) === '.zip') {
-        if (this.files.length > 1) {
-          grunt.fail.fatal('Only one set of files is supported when outputing a zip');
-        }
-        zipOutput = true;
-      }
-      f.src.forEach(function (s) {
-        filePaths[path.basename(s)] = f.dest;
-      });
-    }, this);
+    if (this.data.files.length > 1) {
+      grunt.fail.fatal('Grunt jScrambler only supports one set of files.');
+    }
     var params = _.extend(_.omit(options, 'keys', 'params'), options.params);
     params.files = this.filesSrc;
     jScrambler
@@ -91,13 +53,17 @@ module.exports = function (grunt) {
         projectId = res.id;
         return jScrambler.downloadCode(client, res.id);
       })
-      .then(writeFiles)
+      .then(function (res) {
+        return jScrambler.unzipProject(res, files[0].orig.dest);
+      })
       .then(function () {
-        if(options.deleteProject) {
+        if (options.deleteProject) {
           return jScrambler.deleteCode(client, projectId);
         }
       })
       .then(done)
-      .fail(onError);
+      .fail(function (err) {
+        grunt.fail.fatal(err);
+      });
   });
 };

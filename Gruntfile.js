@@ -12,12 +12,10 @@ module.exports = function (grunt) {
           deleteProject: true
         },
         files: [
-          { src: ['Gruntfile.js'], dest: '.tmp/'},
           {
             expand: true,
-            src: ['tasks/*.js'],
-            dest: '.tmp/',
-            ext: '.min.js'
+            src: ['tasks/**/*.js'],
+            dest: '.tmp'
           }
         ]
       }
