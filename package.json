@@ -33,7 +33,7 @@
   "dependencies": {
     "lodash": "^2.4.1",
     "fs-extra": "^0.8.1",
-    "jscrambler": "^0.2.0",
+    "jscrambler": "^0.3.1",
     "q": "^1.0.0",
     "jszip": "^2.2.0"
   },
