@@ -6,10 +6,7 @@
 'use strict';
 
 var _ = require('lodash');
-var fs = require('fs-extra');
 var jScrambler = require('jscrambler');
-var JSZip = require('jszip');
-var path = require('path');
 
 module.exports = function (grunt) {
   grunt.registerMultiTask('jscrambler', 'Obfuscate your source files', function () {
