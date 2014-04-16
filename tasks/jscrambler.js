@@ -37,7 +37,10 @@ module.exports = function (grunt) {
     var projectId;
     var client = new jScrambler.Client({
       accessKey: options.keys.accessKey,
-      secretKey: options.keys.secretKey
+      secretKey: options.keys.secretKey,
+      host: options.host,
+      port: options.port,
+      apiVersion: options.apiVersion
     });
     if (this.data.files.length > 1) {
       grunt.fail.fatal('Grunt jScrambler only supports one set of files.');
