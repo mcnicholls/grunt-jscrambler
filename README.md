@@ -66,7 +66,3 @@ You can find a list of all the possible parameters in [here](https://github.com/
 ### Usage Example
 
 Usage examples are given in the examples directory.
-
-### To Do
-* Better error report/output
-* Other API methods besides uploading/downloading JScrambled files
