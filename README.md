@@ -1,4 +1,4 @@
-# grunt-jscrambler
+# [grunt](https://github.com/gruntjs/grunt)-jscrambler
 
 > Obfuscate your source files.
 
@@ -43,22 +43,38 @@ grunt.initConfig({
 
 #### Task Options
 
-##### options.keys.accessKey
+##### keys.accessKey
 Type: `String`
 
 A string value that is used to provide the JScrambler API with the access key.
 
-##### options.keys.secretKey
+##### keys.secretKey
 Type: `String`
 
 A string value that is used to sign requests to the JScrambler API.
 
-##### options.deleteProject
+
+##### host
+Type: `String`
+
+A string value that is used to provide the JScrambler's host.
+
+##### port
+Type: `Number`
+
+A number value that is used to provide the JScrambler's port.
+
+##### apiVersion
+Type: `String`
+
+A string value that is used to select the version of JScrambler.
+
+##### deleteProject
 Type: `Boolean`
 
 If this is set to `true` then the project will be deleted from JScrambler after it has been downloaded.
 
-##### options.params
+##### params
 Type: `Object`
 
 You can find a list of all the possible parameters in [here](https://github.com/auditmark/node-jscrambler#jscrambler-options).
