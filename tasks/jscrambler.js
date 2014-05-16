@@ -34,32 +34,18 @@ module.exports = function (grunt) {
         string_splitting:'%DEFAULT%'
       };
     }
-    var projectId;
-    var client = new jScrambler.Client({
-      accessKey: options.keys.accessKey,
-      secretKey: options.keys.secretKey,
-      host: options.host,
-      port: options.port,
-      apiVersion: options.apiVersion
-    });
     if (this.data.files.length > 1) {
       grunt.fail.fatal('Grunt jScrambler only supports one set of files.');
     }
-    var params = _.extend(_.omit(options, 'keys', 'params'), options.params);
-    params.files = this.filesSrc;
     jScrambler
-      .uploadCode(client, params)
-      .then(function (res) {
-        projectId = res.id;
-        return jScrambler.downloadCode(client, res.id);
-      })
-      .then(function (res) {
-        return jScrambler.unzipProject(res, files[0].orig.dest);
-      })
-      .then(function () {
-        if (options.deleteProject) {
-          return jScrambler.deleteCode(client, projectId);
-        }
+      .process({
+        host: options.host,
+        port: options.port,
+        apiVersion: options.apiVersion,
+        keys: options.keys,
+        filesSrc: this.filesSrc,
+        filesDest: files[0].orig.dest,
+        params: options.params
       })
       .then(done)
       .fail(function (err) {
