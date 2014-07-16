@@ -7,6 +7,7 @@
 
 var _ = require('lodash');
 var jScrambler = require('jscrambler');
+var path = require('path');
 
 module.exports = function (grunt) {
   grunt.registerMultiTask('jscrambler', 'Obfuscate your source files', function () {
@@ -34,9 +35,7 @@ module.exports = function (grunt) {
         string_splitting:'%DEFAULT%'
       };
     }
-    if (this.data.files.length > 1) {
-      grunt.fail.fatal('Grunt jScrambler only supports one set of files.');
-    }
+
     jScrambler
       .process({
         host: options.host,
@@ -44,12 +43,28 @@ module.exports = function (grunt) {
         apiVersion: options.apiVersion,
         keys: options.keys,
         filesSrc: this.filesSrc,
-        filesDest: files[0].orig.dest,
         params: options.params
-      })
+      }, writeFile)
       .then(done)
       .fail(function (err) {
         grunt.fail.fatal(err);
       });
+
+    function writeFile(buffer, file) {
+        files.forEach(function(elem) {
+            if(elem.src.indexOf(file) !== -1)
+            {
+                var dest = elem.dest;
+                var lastDestChar = dest[file.length - 1];
+                var destPath;
+                if (elem.src.length === 1 && lastDestChar !== '/' && lastDestChar !== '\\') {
+                  destPath = dest;
+                } else {
+                  destPath = path.join(dest, file);
+                }
+                grunt.file.write(destPath, buffer);
+            }
+        });
+    }
   });
 };
