@@ -15,6 +15,7 @@ module.exports = function (grunt) {
           {
             expand: true,
             src: ['tasks/**/*.js'],
+            flatten: true,
             dest: '.tmp'
           }
         ]
