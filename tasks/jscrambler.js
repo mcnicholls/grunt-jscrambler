@@ -52,18 +52,20 @@ module.exports = function (grunt) {
 
     function writeFile(buffer, file) {
         files.forEach(function(elem) {
-            if(elem.src.indexOf(file) !== -1)
-            {
-                var dest = elem.dest;
-                var lastDestChar = dest[file.length - 1];
-                var destPath;
-                if (elem.src.length === 1 && lastDestChar !== '/' && lastDestChar !== '\\') {
-                  destPath = dest;
-                } else {
-                  destPath = path.join(dest, file);
+            elem.src.forEach(function(src) {
+                if(grunt.file.arePathsEquivalent(src, file))
+                {
+                    var dest = elem.dest;
+                    var lastDestChar = dest[file.length - 1];
+                    var destPath;
+                    if (elem.src.length === 1 && lastDestChar !== '/' && lastDestChar !== '\\') {
+                      destPath = dest;
+                    } else {
+                      destPath = path.join(dest, file);
+                    }
+                    grunt.file.write(destPath, buffer);
                 }
-                grunt.file.write(destPath, buffer);
-            }
+            });
         });
     }
   });
