@@ -42,6 +42,7 @@ module.exports = function (grunt) {
         port: options.port,
         apiVersion: options.apiVersion,
         keys: options.keys,
+        deleteProject: options.deleteProject,
         filesSrc: this.filesSrc,
         params: options.params
       }, writeFile)
