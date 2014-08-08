@@ -57,7 +57,7 @@ module.exports = function (grunt) {
         elem.src.forEach(function (src) {
           if (grunt.file.arePathsEquivalent(src, file)) {
             var dest = elem.dest;
-            var lastDestChar = dest[file.length - 1];
+            var lastDestChar = dest[dest.length - 1];
             var destPath;
             if (elem.src.length === 1 && lastDestChar !== '/' && lastDestChar !== '\\') {
               destPath = dest;
