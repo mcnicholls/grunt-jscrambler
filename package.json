@@ -1,7 +1,7 @@
 {
   "name": "grunt-jscrambler",
   "description": "Obfuscate your source files using the JScrambler API.",
-  "version": "0.2.7",
+  "version": "0.2.8",
   "homepage": "https://github.com/auditmark/grunt-jscrambler",
   "author": "José Magalhães <magalhas@gmail.com> (https://github.com/magalhas)",
   "contributors": [
@@ -31,7 +31,7 @@
     "grunt-contrib-clean": "^0.5.0"
   },
   "dependencies": {
-    "jscrambler": "^0.5.5",
+    "jscrambler": "^0.5.6",
     "lodash": "^2.4.1"
   },
   "keywords": [
