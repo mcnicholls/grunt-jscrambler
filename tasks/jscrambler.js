@@ -25,15 +25,7 @@ module.exports = function (grunt) {
       // By default the params are optimized for Node.js
       options.params = {
         rename_local: '%DEFAULT%',
-        whitespace: '%DEFAULT%',
-        literal_hooking: '%DEFAULT%',
-        dead_code: '%DEFAULT%',
-        dot_notation_elimination: '%DEFAULT%',
-        dead_code_elimination: '%DEFAULT%',
-        constant_folding: '%DEFAULT%',
-        literal_duplicates: '%DEFAULT%',
-        function_outlining: '%DEFAULT%',
-        string_splitting:'%DEFAULT%'
+        whitespace: '%DEFAULT%'
       };
     }
 
