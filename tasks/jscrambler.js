@@ -22,7 +22,7 @@ module.exports = function (grunt) {
       deleteProject: false
     });
     if (!options.params) {
-      // By default the params are optimized for Node.js
+      // By default we only use minification parameters
       options.params = {
         rename_local: '%DEFAULT%',
         whitespace: '%DEFAULT%'
