@@ -15,10 +15,7 @@ module.exports = function (grunt) {
     var done = this.async();
     var files = this.files;
     var options = this.options({
-      keys: {
-        accessKey: '',
-        secretKey: ''
-      },
+      keys: {},
       deleteProject: false
     });
     if (!options.params) {
