@@ -2,22 +2,22 @@
   "name": "grunt-jscrambler",
   "description": "Obfuscate your source files using the JScrambler API.",
   "version": "0.2.8",
-  "homepage": "https://github.com/auditmark/grunt-jscrambler",
+  "homepage": "https://github.com/jscrambler/grunt-jscrambler",
   "author": "José Magalhães <magalhas@gmail.com> (https://github.com/magalhas)",
   "contributors": [
     "Michael Nicholls <nicholls.mc@gmail.com> (https://github.com/mcnicholls)"
   ],
   "repository": {
     "type": "git",
-    "url": "git://github.com:auditmark/grunt-jscrambler.git"
+    "url": "git://github.com:jscrambler/grunt-jscrambler.git"
   },
   "bugs": {
-    "url": "https://github.com/auditmark/grunt-jscrambler/issues"
+    "url": "https://github.com/jscrambler/grunt-jscrambler/issues"
   },
   "licenses": [
     {
       "type": "MIT",
-      "url": "https://github.com/auditmark/grunt-jscrambler/blob/master/LICENSE-MIT"
+      "url": "https://github.com/jscrambler/grunt-jscrambler/blob/master/LICENSE-MIT"
     }
   ],
   "engines": {
