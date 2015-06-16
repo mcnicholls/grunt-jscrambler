@@ -51,7 +51,7 @@ module.exports = function (grunt) {
             if (elem.src.length === 1 && lastDestChar !== '/' && lastDestChar !== '\\') {
               destPath = dest;
             } else {
-              destPath = path.join(dest, file);
+              destPath = path.join(dest, path.basename(file));
             }
             grunt.file.write(destPath, buffer);
           }
